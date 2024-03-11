@@ -11,8 +11,6 @@ const againBtn = document.querySelector('.again');
 
 const checkBtn = document.querySelector('.check');
 
-const message = document.querySelector('.message');
-
 const body = document.querySelector('body');
 
 const randomNum = Math.trunc(Math.random() * 20) + 1;
@@ -20,14 +18,18 @@ const randomNum = Math.trunc(Math.random() * 20) + 1;
 let score = 20;
 let highscore = 0;
 
+const displayMessage = function (message) {
+  document.querySelector('.message').textContent = message;
+};
+
 checkBtn.addEventListener('click', function () {
   const inputValue = Number(document.querySelector('.guess').value);
   console.log(inputValue);
   if (!inputValue) {
-    message.textContent = '✋🏻Choose Number';
+    displayMessage('✋🏻Choose Number');
   } else if (inputValue === randomNum) {
     document.querySelector('.number').textContent = randomNum;
-    message.textContent = 'Correct Number👍🏻';
+    displayMessage('Correct Number👍🏻');
     body.style.background = '#60b347';
     score--;
     document.querySelector('.score').textContent = score;
@@ -36,14 +38,12 @@ checkBtn.addEventListener('click', function () {
       document.querySelector('.highscore').textContent = highscore;
     } else document.querySelector('.highscore').textContent = highscore;
   } else if (inputValue !== randomNum) {
-    if (score < 1) {
-      message.textContent = 'You lost the game';
-    } else {
+    if (score > 1) {
       score--;
       document.querySelector('.score').textContent = score;
-      inputValue > randomNum
-        ? (message.textContent = 'Lower')
-        : (message.textContent = 'Upper');
+      displayMessage(inputValue > randomNum ? 'Lower' : 'Upper');
+    } else {
+      displayMessage('You lost the game');
     }
   }
 });
@@ -52,9 +52,12 @@ againBtn.addEventListener('click', function () {
   //   document.querySelector('.guess').value = '';
   score = 20;
   document.querySelector('.score').textContent = score;
+  displayMessage('start guessing');
   //random number
   document.querySelector('.number').textContent = '?';
   const randomNum = Math.trunc(Math.random() * 20) + 1;
   //input reset
   document.querySelector('.guess').value = '';
+  //bg reset
+  body.style.background = '#222';
 });
